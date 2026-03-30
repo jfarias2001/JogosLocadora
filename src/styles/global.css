@@ -1,30 +1,99 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 * {
   font-family: 'Inter', sans-serif;
 }
 
 :root {
-  --cor-primaria: #6c3fc5;
-  --cor-secundaria: #f0ebff;
-  --cor-disponivel: #198754;
-  --cor-alugado: #dc3545;
-  --cor-reservado: #ffc107;
+  --cor-primaria: #1e1e2e;
+  --cor-secundaria: #f4f4f8;
+  --cor-acento: #5b5fc7;
+  --cor-disponivel: #2d6a4f;
+  --cor-alugado: #c1121f;
+  --cor-texto: #2c2c3e;
+  --cor-texto-suave: #6b7280;
+  --cor-borda: #e5e7eb;
+  --cor-fundo: #f9f9fb;
+  --cor-card: #ffffff;
+}
+
+[data-theme="dark"] {
+  --cor-secundaria: #2a2a3e;
+  --cor-texto: #e5e7eb;
+  --cor-texto-suave: #9ca3af;
+  --cor-borda: #3a3a5c;
+  --cor-fundo: #1a1a2e;
+  --cor-card: #2a2a3e;
+  color-scheme: dark;
 }
 
 body {
-  background-color: #f8f9fa;
+  background-color: var(--cor-fundo);
+  color: var(--cor-texto);
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.card {
+  background-color: var(--cor-card) !important;
+  border: 1px solid var(--cor-borda) !important;
+  border-radius: 12px !important;
 }
 
 .badge-disponivel {
-  background-color: var(--cor-disponivel);
+  background-color: #dcf0e8;
+  color: var(--cor-disponivel);
+  font-weight: 600;
 }
 
 .badge-alugado {
-  background-color: var(--cor-alugado);
+  background-color: #fde8e8;
+  color: var(--cor-alugado);
+  font-weight: 600;
 }
 
-.badge-reservado {
-  background-color: var(--cor-reservado);
-  color: #000;
+.btn-primary {
+  background-color: var(--cor-acento) !important;
+  border-color: var(--cor-acento) !important;
+}
+
+.btn-primary:hover {
+  background-color: #4a4eb5 !important;
+  border-color: #4a4eb5 !important;
+}
+
+[data-theme="dark"] .card {
+  color: var(--cor-texto) !important;
+}
+
+[data-theme="dark"] .text-muted {
+  color: var(--cor-texto-suave) !important;
+}
+
+[data-theme="dark"] .form-control,
+[data-theme="dark"] .form-select {
+  background-color: #1a1a2e !important;
+  color: var(--cor-texto) !important;
+  border-color: var(--cor-borda) !important;
+}
+
+[data-theme="dark"] .form-label {
+  color: var(--cor-texto-suave) !important;
+}
+
+[data-theme="dark"] h3,
+[data-theme="dark"] h4,
+[data-theme="dark"] h5,
+[data-theme="dark"] span,
+[data-theme="dark"] p {
+  color: var(--cor-texto);
+}
+
+[data-theme="dark"] .badge-disponivel {
+  background-color: #1a3d2e;
+  color: #6ee7b7 !important;
+}
+
+[data-theme="dark"] .badge-alugado {
+  background-color: #3d1a1a;
+  color: #fca5a5 !important;
 }

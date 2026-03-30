@@ -1,10 +1,12 @@
-export type StatusJogo = "disponivel" | "alugado" | "reservado";
+export type StatusJogo = "disponivel" | "alugado";
 
 export interface IJogo {
   id: number;
   titulo: string;
   plataforma: string;
   genero: string;
+  descricao: string;
+  capa: string;
   status: StatusJogo;
 }
 
@@ -14,3 +16,5 @@ export interface IDashboard {
   totalAlugados: number;
   totalReservados: number;
 }
+
+export type PaginaAtiva = "acervo" | "relatorios" | "configuracoes";
