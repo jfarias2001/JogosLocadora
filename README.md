@@ -1,73 +1,46 @@
-# React + TypeScript + Vite
+# Locadora de Jogos - PixelRent
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aplicacao web para gerenciamento de acervo de jogos, com dashboard, listagem, filtros, aluguel/devolucao e tela de configuracoes.
 
-Currently, two official plugins are available:
+## Tecnologias
+- React + Vite
+- TypeScript
+- Bootstrap via CDN
+- CSS externo para personalizacao visual
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Justificativa da Arquitetura
+A arquitetura foi dividida por responsabilidade para facilitar manutencao, reutilizacao e leitura do codigo:
 
-## React Compiler
+- `src/components/layout`: componentes de estrutura global da interface (`Sidebar`, `Header`, `Footer`, `Relatorios`, `Configuracoes`).
+- `src/components/jogos`: componentes focados no dominio principal da aplicacao (`ListaJogos`, `CardJogo`).
+- `src/components/common`: componentes reutilizaveis em diferentes telas (`BadgeStatus`).
+- `src/types`: centralizacao dos tipos e interfaces (`IJogo`, `IDashboard`, `StatusJogo`, `PaginaAtiva`), garantindo seguranca na tipagem de props e estados.
+- `src/data`: dados iniciais do sistema (`jogosIniciais`), separando conteudo de logica de interface.
+- `src/styles`: estilos globais e personalizacoes (`global.css`), mantendo o visual desacoplado dos componentes.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Essa divisao foi escolhida para:
 
-## Expanding the ESLint configuration
+1. Evitar componentes gigantes com muitas responsabilidades.
+2. Permitir evolucao por modulo (layout, jogos, componentes comuns).
+3. Facilitar testes e correcoes localizadas.
+4. Reforcar o uso de TypeScript como camada de seguranca de dados.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Decisoes Tecnicas Principais
+- Estado central no `App.tsx` para manter consistencia entre listagem e dashboard.
+- Atualizacao imediata dos contadores dinamicos ao alugar/devolver.
+- Tipagem explicita de interfaces e props para reduzir erros em tempo de desenvolvimento.
+- Layout responsivo com grid e semantica HTML5 (`header`, `main`, `section`, `aside`, `address`).
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Como Executar
+1. Instalar dependencias:
+```bash
+npm install
 ```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+2. Rodar em modo desenvolvimento:
+```bash
+npm run dev
+```
+3. Build de producao:
+```bash
+npm run build
 ```

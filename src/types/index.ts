@@ -8,6 +8,7 @@ export interface IJogo {
   descricao: string;
   capa: string;
   status: StatusJogo;
+  estoque: number;
 }
 
 export interface IDashboard {

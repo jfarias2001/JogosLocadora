@@ -1,4 +1,4 @@
-import { Monitor, Tag, FileText, ShoppingCart, RotateCcw, ImageOff } from "lucide-react";
+import { Monitor, Tag, ImageOff, ShoppingCart, RotateCcw, Package } from "lucide-react";
 import { useState } from "react";
 import type { IJogo } from "../../types";
 import { BadgeStatus } from "../common/BadgeStatus";
@@ -11,65 +11,69 @@ interface CardJogoProps {
 
 export function CardJogo({ jogo, onAlugar, onDevolver }: CardJogoProps) {
   const [imgError, setImgError] = useState(false);
+  const disponivel = jogo.status === "disponivel";
+  const semEstoque = jogo.estoque <= 0;
 
   return (
-    <div className="card mb-3 shadow-sm">
-      <div className="card-body d-flex gap-3">
-        <div
-          className="rounded d-flex align-items-center justify-content-center flex-shrink-0"
-          style={{ width: 90, height: 120, backgroundColor: "var(--cor-secundaria)", overflow: "hidden" }}
-        >
-          {imgError ? (
-            <ImageOff size={28} color="var(--cor-texto-suave)" />
-          ) : (
-            <img
-              src={jogo.capa}
-              alt={`Capa de ${jogo.titulo}`}
-              onError={() => setImgError(true)}
-              style={{ width: "100%", height: "100%", objectFit: "cover" }}
-            />
-          )}
-        </div>
-
-        <div className="d-flex justify-content-between align-items-start flex-grow-1">
-          <div className="flex-grow-1 me-3">
-            <h5 className="card-title mb-2 fw-semibold">{jogo.titulo}</h5>
-            <div className="d-flex gap-3 mb-2">
-              <span className="d-flex align-items-center gap-1 small text-muted">
-                <Monitor size={14} />
-                {jogo.plataforma}
-              </span>
-              <span className="d-flex align-items-center gap-1 small text-muted">
-                <Tag size={14} />
-                {jogo.genero}
-              </span>
-            </div>
-            <p className="card-text small text-muted mb-2 d-flex align-items-start gap-1">
-              <FileText size={14} style={{ marginTop: "3px", flexShrink: 0 }} />
-              {jogo.descricao}
-            </p>
-            <BadgeStatus status={jogo.status} />
+    <article className="game-card">
+      <div className="game-card-cover">
+        {imgError || !jogo.capa ? (
+          <div className="game-card-no-image">
+            <ImageOff size={28} />
+            <span>{jogo.titulo}</span>
           </div>
-          <div className="d-flex flex-column gap-2">
-            <button
-              className="btn btn-sm btn-primary d-flex align-items-center gap-1"
-              onClick={() => onAlugar(jogo.id)}
-              disabled={jogo.status !== "disponivel"}
-            >
-              <ShoppingCart size={14} />
-              Alugar
-            </button>
-            <button
-              className="btn btn-sm btn-outline-secondary d-flex align-items-center gap-1"
-              onClick={() => onDevolver(jogo.id)}
-              disabled={jogo.status !== "alugado"}
-            >
-              <RotateCcw size={14} />
-              Devolver
-            </button>
-          </div>
+        ) : (
+          <img
+            src={jogo.capa}
+            alt={`Capa de ${jogo.titulo}`}
+            onError={() => setImgError(true)}
+          />
+        )}
+        <div className="game-card-badge-overlay">
+          <BadgeStatus status={jogo.status} />
         </div>
       </div>
-    </div>
+
+      <div className="game-card-body">
+        <h3 className="game-card-title">{jogo.titulo}</h3>
+        <div className="game-card-chips">
+          <span className="chip">
+            <Monitor size={10} />
+            {jogo.plataforma}
+          </span>
+          <span className="chip">
+            <Tag size={10} />
+            {jogo.genero}
+          </span>
+        </div>
+        <p className="game-card-desc">{jogo.descricao}</p>
+        <div className="game-card-stock">
+          <Package size={11} />
+          {!semEstoque
+            ? `${jogo.estoque} cópia${jogo.estoque === 1 ? "" : "s"} disponív${jogo.estoque === 1 ? "el" : "eis"}`
+            : "Sem estoque"}
+        </div>
+      </div>
+
+      <div className="game-card-footer">
+        <button
+          className="btn btn-primary"
+          onClick={() => onAlugar(jogo.id)}
+          disabled={semEstoque}
+        >
+          <ShoppingCart size={13} />
+          Alugar
+        </button>
+        <button
+          className="btn btn-secondary"
+          onClick={() => onDevolver(jogo.id)}
+          disabled={disponivel}
+          title="Devolver"
+          style={{ flex: "0 0 auto", width: 32, padding: 0 }}
+        >
+          <RotateCcw size={13} />
+        </button>
+      </div>
+    </article>
   );
 }

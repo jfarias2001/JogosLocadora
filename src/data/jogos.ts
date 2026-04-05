@@ -1,6 +1,6 @@
 import type { IJogo } from "../types";
 
-export const jogosIniciais: IJogo[] = [
+export const jogosIniciais: Omit<IJogo, "estoque">[] = [
   {
     id: 1,
     titulo: "God of War Ragnarök",
