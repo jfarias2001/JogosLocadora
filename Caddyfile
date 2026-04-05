@@ -1,0 +1,4 @@
+pixel.paglamp.com.br {
+  encode gzip zstd
+  reverse_proxy pixelrent:80
+}

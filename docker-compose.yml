@@ -1,0 +1,32 @@
+services:
+  pixelrent:
+    build: .
+    container_name: pixelrent
+    restart: unless-stopped
+    expose:
+      - "80"
+    networks:
+      - web
+
+  caddy:
+    image: caddy:2.9-alpine
+    container_name: pixelrent-caddy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - pixelrent
+    networks:
+      - web
+
+networks:
+  web:
+
+volumes:
+  caddy_data:
+  caddy_config:
