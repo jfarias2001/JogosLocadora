@@ -7,9 +7,15 @@ services:
       - "80"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.pixelrent.rule=Host(`pixel.paglamp.com.br`)"
-      - "traefik.http.routers.pixelrent.entrypoints=websecure"
-      - "traefik.http.routers.pixelrent.tls=true"
+      - "traefik.http.routers.pixelrent-http.rule=Host(`pixel.paglamp.com.br`)"
+      - "traefik.http.routers.pixelrent-http.entrypoints=web"
+      - "traefik.http.routers.pixelrent-http.middlewares=pixelrent-https-redirect"
+      - "traefik.http.middlewares.pixelrent-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.pixelrent-https-redirect.redirectscheme.permanent=true"
+      - "traefik.http.routers.pixelrent-https.rule=Host(`pixel.paglamp.com.br`)"
+      - "traefik.http.routers.pixelrent-https.entrypoints=websecure"
+      - "traefik.http.routers.pixelrent-https.tls=true"
+      - "traefik.http.routers.pixelrent-https.tls.certresolver=${TRAEFIK_CERTRESOLVER:-letsencrypt}"
       - "traefik.http.services.pixelrent.loadbalancer.server.port=80"
     networks:
       - traefik

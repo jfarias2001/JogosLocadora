@@ -51,7 +51,6 @@ Arquivos adicionados para deploy:
 - `Dockerfile`
 - `nginx.conf`
 - `docker-compose.yml`
-- `Caddyfile`
 - `.dockerignore`
 
 ### Rodar local com Docker
@@ -79,7 +78,12 @@ docker compose up -d --build
 - `https://pixel.paglamp.com.br`
 
 Observacao:
-- O Caddy emite e renova o certificado TLS automaticamente.
+- O Traefik emite e renova o certificado TLS automaticamente quando o `certresolver` esta configurado.
+- Neste projeto, o label usa `TRAEFIK_CERTRESOLVER` com fallback para `letsencrypt`.
+- Se seu Traefik usa outro nome de resolver, exporte antes do deploy:
+```bash
+export TRAEFIK_CERTRESOLVER=seu_resolver
+```
 
 ### Atualizar deploy apos mudancas
 ```bash
