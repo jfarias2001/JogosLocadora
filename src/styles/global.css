@@ -1024,10 +1024,34 @@ textarea.input {
     min-height: 100%;
   }
 
+  /* No mobile, sempre exibimos os textos da navegacao para manter legibilidade. */
   .app-sidebar .sidebar-brand-name,
   .app-sidebar .sidebar-btn-label,
   .app-sidebar .sidebar-section-label,
-  .app-sidebar .sidebar-collapse-btn-label { opacity: 0; max-width: 0; }
+  .app-sidebar .sidebar-collapse-btn-label {
+    opacity: 1;
+    max-width: 200px;
+  }
+
+  .app-sidebar .sidebar.collapsed .sidebar-brand-logo {
+    opacity: 1;
+    max-width: 200px;
+  }
+
+  .app-sidebar .sidebar.collapsed .sidebar-btn-label,
+  .app-sidebar .sidebar.collapsed .sidebar-section-label,
+  .app-sidebar .sidebar.collapsed .sidebar-collapse-btn-label {
+    opacity: 1;
+    max-width: 200px;
+  }
+
+  .app-sidebar .sidebar.collapsed .sidebar-brand-logo-compact {
+    display: none;
+  }
+
+  .app-sidebar .sidebar-collapse-btn {
+    display: none;
+  }
 
   .page-content { padding: var(--sp-5) var(--sp-4); }
   .top-bar { padding: var(--sp-3) var(--sp-4); }
