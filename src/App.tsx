@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Navigate, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import type { IJogo, PaginaAtiva } from "./types";
 import { jogosIniciais } from "./data/jogos";
 import { Sidebar } from "./components/layout/Sidebar";
@@ -19,9 +20,10 @@ function App() {
   const [historicoAlugueis, setHistoricoAlugueis] = useState<Record<number, number>>({});
   const [alugadosUsuario, setAlugadosUsuario] = useState<Record<number, boolean>>({});
   const [mensagem, setMensagem] = useState<{ texto: string; tipo: "success" | "warning" } | null>(null);
-  const [paginaAtiva, setPaginaAtiva] = useState<PaginaAtiva>("acervo");
   const [temaEscuro, setTemaEscuro] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", temaEscuro ? "dark" : "light");
@@ -97,23 +99,14 @@ function App() {
     setJogos((prev) => prev.map((j) => (j.id === jogoEditado.id ? jogoEditado : j)));
   }
 
-  function renderPagina() {
-    switch (paginaAtiva) {
-      case "acervo":
-        return <ListaJogos jogos={jogos} onAlugar={handleAlugar} onDevolver={handleDevolver} />;
-      case "relatorios":
-        return <Relatorios dashboard={dashboard} jogos={jogos} historicoAlugueis={historicoAlugueis} />;
-      case "configuracoes":
-        return (
-          <Configuracoes
-            onAdicionarJogo={handleAdicionarJogo}
-            onEditarJogo={handleEditarJogo}
-            totalJogos={jogos.length}
-            jogos={jogos}
-          />
-        );
-    }
-  }
+  const pathToPage: Record<string, PaginaAtiva> = {
+    "/acervo": "acervo",
+    "/relatorios": "relatorios",
+    "/configuracoes": "configuracoes",
+  };
+
+  const paginaAtiva: PaginaAtiva = pathToPage[location.pathname] ?? "acervo";
+  const handleNavegar = (pagina: PaginaAtiva) => navigate(`/${pagina}`);
 
   return (
     <div className="app-layout container-fluid">
@@ -123,7 +116,7 @@ function App() {
         >
           <Sidebar
             paginaAtiva={paginaAtiva}
-            onNavegar={setPaginaAtiva}
+            onNavegar={handleNavegar}
             collapsed={sidebarCollapsed}
             onToggleCollapse={() => setSidebarCollapsed((prev) => !prev)}
           />
@@ -140,7 +133,29 @@ function App() {
                 {mensagem.texto}
               </div>
             )}
-            {renderPagina()}
+            <Routes>
+              <Route path="/" element={<Navigate to="/acervo" replace />} />
+              <Route
+                path="/acervo"
+                element={<ListaJogos jogos={jogos} onAlugar={handleAlugar} onDevolver={handleDevolver} />}
+              />
+              <Route
+                path="/relatorios"
+                element={<Relatorios dashboard={dashboard} jogos={jogos} historicoAlugueis={historicoAlugueis} />}
+              />
+              <Route
+                path="/configuracoes"
+                element={
+                  <Configuracoes
+                    onAdicionarJogo={handleAdicionarJogo}
+                    onEditarJogo={handleEditarJogo}
+                    totalJogos={jogos.length}
+                    jogos={jogos}
+                  />
+                }
+              />
+              <Route path="*" element={<Navigate to="/acervo" replace />} />
+            </Routes>
           </section>
           <Footer />
         </main>
